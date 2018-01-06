@@ -9,7 +9,8 @@
 	//產生回傳給line server的格式
 	$sender_userid = $json_obj->events[0]->source->userId;
 	$sender_txt = $json_obj->events[0]->message->text;
-	$sender_replyToken = $json_obj->events[0]->replyToken;	
+	$sender_replyToken = $json_obj->events[0]->replyToken;
+	$line_server_url = 'https://api.line.me/v2/bot/message/push';
 	switch ($sender_txt) {
     		case "push":
         		$response = array (
@@ -23,6 +24,7 @@
 			);
         		break;
     		case "reply":
+			$line_server_url = 'https://api.line.me/v2/bot/message/reply';
         		$response = array (
 				"replyToken" => $sender_replyToken,
 				"messages" => array (
@@ -35,7 +37,7 @@
         		break;
     		default:
         		$response = array (
-				"replyToken" => $sender_userid,
+				"to" => $sender_userid,
 				"messages" => array (
 					array (
 						"type" => "text",
@@ -43,7 +45,6 @@
 					)
 				)
 			);
-        		break;
         		break;
 	}
 
@@ -55,7 +56,7 @@
 	//回傳給line server
 	$header[] = "Content-Type: application/json";
 	$header[] = "Authorization: Bearer cCubKq3mCMRx0RcZcoHLDP0r38pPEn5ZkqgTRT0c4fexsmrtN52Fs5kGkQxZYmED5pM1iDsG5M+1si8PS5dgKDs8xF6Qw0DNdddVrMkhc9WJmD1pRVtGqwY4rSNS+/AgkfGoI10hRps8GI//6k7f9AdB04t89/1O/w1cDnyilFU=";
-	$ch = curl_init('https://api.line.me/v2/bot/message/push');                                                                      
+	$ch = curl_init($line_server_url);                                                                      
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($response));                                                                  
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
