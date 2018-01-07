@@ -4,7 +4,7 @@
 	$json_obj = json_decode($json_str); //轉成json格式
 	
 	$myfile = fopen("log.txt", "w+") or die("Unable to open file!"); //設定一個log.txt，用來印訊息
-	//fwrite($myfile, "\xEF\xBB\xBF".$json_str); //在字串前加上\xEF\xBB\xBF轉成utf8格式
+	fwrite($myfile, "\xEF\xBB\xBF".$json_str); //在字串前加上\xEF\xBB\xBF轉成utf8格式
 
 	//產生回傳給line server的格式
 	$sender_userid = $json_obj->events[0]->source->userId;
@@ -76,6 +76,36 @@
 				)
 			);
         		break;
+		case "button":
+			$line_server_url = 'https://api.line.me/v2/bot/message/reply';
+        		$response = array (
+				"replyToken" => $sender_replyToken,
+				"messages" => array (
+					array (
+						"type" => "template",
+						"altText" => "this is a buttons template",
+						"template" => array (
+							"type" => "buttons",
+							"thumbnailImageUrl" => "https://www.w3schools.com/css/paris.jpg",
+							"title" => "Menu",
+							"text" => "Please select",
+							"actions" => array (
+								array (
+									"type" => "postback",
+									"label" => "Buy",
+									"data" => "action=buy&itemid=123"
+								),
+								array (
+									"type" => "postback",
+                   							"label" => "Add to cart",
+                    							"data" => "action=add&itemid=123"
+								)
+							)
+						)
+					)
+				)
+			);
+        		break;
     		default:
         		$response = array (
 				"to" => $sender_userid,
@@ -91,7 +121,7 @@
 
 	
 	
-	fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前加上\xEF\xBB\xBF轉成utf8格式
+	//fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前加上\xEF\xBB\xBF轉成utf8格式
 	fclose($myfile);
 		
 	//回傳給line server
