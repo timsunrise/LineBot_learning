@@ -107,7 +107,21 @@
 			);
         		break;
     		default:
-        		$response = array (
+			$objID = $json_obj->events[0]->message->id;
+			$url = 'https://api.line.me/v2/bot/message/'.$objID.'/content';
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'Authorization: Bearer cCubKq3mCMRx0RcZcoHLDP0r38pPEn5ZkqgTRT0c4fexsmrtN52Fs5kGkQxZYmED5pM1iDsG5M+1si8PS5dgKDs8xF6Qw0DNdddVrMkhc9WJmD1pRVtGqwY4rSNS+/AgkfGoI10hRps8GI//6k7f9AdB04t89/1O/w1cDnyilFU=',
+			));
+				
+			$json_content = curl_exec($ch);
+			curl_close($ch);
+
+			$imagefile = fopen($objID.".jpeg", "w+") or die("Unable to open file!"); //設定一個log.txt，用來印訊息
+			fwrite($imagefile, $json_content); 
+			fclose($imagefile);
+        		/*$response = array (
 				"to" => $sender_userid,
 				"messages" => array (
 					array (
@@ -115,7 +129,7 @@
 						"text" => "Hello, YOU SAY ".$sender_txt
 					)
 				)
-			);
+			);*/
         		break;
 	}
 
