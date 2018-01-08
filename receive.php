@@ -121,15 +121,39 @@
 			$imagefile = fopen($objID.".jpeg", "w+") or die("Unable to open file!"); //設定一個log.txt，用來印訊息
 			fwrite($imagefile, $json_content); 
 			fclose($imagefile);
-        		/*$response = array (
+        		$header[] = "Content-Type: application/json";
+			$post_data = array (
+				"requests" => array (
+						array (
+							"image" => array (
+								"source" => array (
+									"imageUri" => "http://139.59.123.8/chtChatBot/20180109_LineBot/".$objID.".jpeg"
+								)
+							),
+							"features" => array (
+								array (
+									"type" => "TEXT_DETECTION",
+									"maxResults" => 1
+								)
+							)
+						)
+					)
+			);
+			$ch = curl_init('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCiyGiCfjzzPR1JS8PrAxcsQWHdbycVwmg');                                                                      
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));                                                                  
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);                                                                                                   
+			$result = json_decode(curl_exec($ch));
+			$response = array (
 				"to" => $sender_userid,
 				"messages" => array (
 					array (
 						"type" => "text",
-						"text" => "Hello, YOU SAY ".$sender_txt
+						"text" => "Hello, YOU SAY ".$result -> responses[0] -> fullTextAnnotation -> text
 					)
 				)
-			);*/
+			);
         		break;
 	}
 
