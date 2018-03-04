@@ -107,7 +107,7 @@
 			);
         		break;
     		default:
-			$ch = curl_init('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2a767935-e661-4c58-8d16-ad32fcbb5d95?subscription-key=2c842c8dba264856887b7d947d96fd05&staging=true&verbose=true&timezoneOffset=480&q='.$sender_txt);                                                                      
+			$ch = curl_init("\xEF\xBB\xBF".'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2a767935-e661-4c58-8d16-ad32fcbb5d95?subscription-key=2c842c8dba264856887b7d947d96fd05&staging=true&verbose=true&timezoneOffset=480&q='.$sender_txt);                                                                      
 			fwrite($myfile, "\xEF\xBB\xBF".'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2a767935-e661-4c58-8d16-ad32fcbb5d95?subscription-key=2c842c8dba264856887b7d947d96fd05&staging=true&verbose=true&timezoneOffset=480&q='.$sender_txt);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                          
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                                                                                     
