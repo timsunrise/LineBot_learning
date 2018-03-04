@@ -127,7 +127,7 @@
 
 	
 	
-	fwrite($myfile, json_encode($result)); //在字串前加上\xEF\xBB\xBF轉成utf8格式
+	fwrite($myfile, "\xEF\xBB\xBF".json_encode($result)); //在字串前加上\xEF\xBB\xBF轉成utf8格式
 	fclose($myfile);
 		
 	//回傳給line server
