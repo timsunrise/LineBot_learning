@@ -112,7 +112,7 @@
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                          
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                                                                                     
 			$result = json_decode(curl_exec($ch));
-			$ans_txt = mb_split("\n",$result -> topScoringIntent -> intent);
+			$ans_txt = $result -> topScoringIntent -> intent;
 			$response = array (
 				"to" => $sender_userid,
 				"messages" => array (
