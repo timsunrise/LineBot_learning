@@ -10,22 +10,22 @@
   $sender_replyToken = $json_obj->events[0]->replyToken; //取得訊息的replyToken
   
   $sender_txt=rawurlencode($sender_txt); //因為使用get的方式呼叫luis api，所以需要轉碼
-	$ch = curl_init('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2a767935-e661-4c58-8d16-ad32fcbb5d95?subscription-key=2c842c8dba264856887b7d947d96fd05&staging=true&verbose=true&timezoneOffset=480&q='.$sender_txt);                                                                      
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                          
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$result_str = curl_exec($ch);
-	fwrite($myfile, "\xEF\xBB\xBF".$result_str); //在字串前加上\xEF\xBB\xBF轉成utf8格式
-	$result = json_decode($result_str);
-	$ans_txt = $result -> topScoringIntent -> intent;
-				$response = array (
-					"to" => $sender_userid,
-					"messages" => array (
-						array (
-							"type" => "text",
-							"text" => $ans_txt
-						)
-					)
-				);
+  $ch = curl_init('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2a767935-e661-4c58-8d16-ad32fcbb5d95?subscription-key=2c842c8dba264856887b7d947d96fd05&staging=true&verbose=true&timezoneOffset=480&q='.$sender_txt);                                                                      
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                          
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  $result_str = curl_exec($ch);
+  fwrite($myfile, "\xEF\xBB\xBF".$result_str); //在字串前加上\xEF\xBB\xBF轉成utf8格式
+  $result = json_decode($result_str);
+  $ans_txt = $result -> topScoringIntent -> intent;
+  $response = array (
+    "to" => $sender_userid,
+    "messages" => array (
+      array (
+        "type" => "text",
+        "text" => $ans_txt
+      )
+    )
+  );
   
   
  fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
