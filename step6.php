@@ -10,19 +10,20 @@
   $sender_replyToken = $json_obj->events[0]->replyToken; //取得訊息的replyToken
   
   $imageId = $json_obj->events[0]->message->id; //取得訊息編號
-	$url = 'https://api.line.me/v2/bot/message/'.$imageId.'/content';
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'Authorization: Bearer gd1gyH+Pc5TROu9ku5u/5tDvFnffsU8nXU69zXuhTgE0dIS5nVGmx9Js8PwijeUqgFuwWXzyJ14/N5FUmp/UXsmSJbUsxMGA6AW1gozlf6cbEgSGLiC02BEaRa5wUSqE7df8FOANP1WjPW8Mh/TgtwdB04t89/1O/w1cDnyilFU='
-	));
-	$json_content = curl_exec($ch);
-	curl_close($ch);
-	$imagefile = fopen($imageId.".jpeg", "w+") or die("Unable to open file!");
-	fwrite($imagefile, $json_content); 
-	fclose($imagefile); //將圖片存在server上
+  $url = 'https://api.line.me/v2/bot/message/'.$imageId.'/content';
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Authorization: Bearer gd1gyH+Pc5TROu9ku5u/5tDvFnffsU8nXU69zXuhTgE0dIS5nVGmx9Js8PwijeUqgFuwWXzyJ14/N5FUmp/UXsmSJbUsxMGA6AW1gozlf6cbEgSGLiC02BEaRa5wUSqE7df8FOANP1WjPW8Mh/TgtwdB04t89/1O/w1cDnyilFU='
+  ));
+
+  $json_content = curl_exec($ch);
+  curl_close($ch);
+  $imagefile = fopen($imageId.".jpeg", "w+") or die("Unable to open file!");
+  fwrite($imagefile, $json_content); 
+  fclose($imagefile); //將圖片存在server上
 			
-	$header[] = "Content-Type: application/json";
+  $header[] = "Content-Type: application/json";
 	$post_data = array (
 		"requests" => array (
 				array (
@@ -54,7 +55,7 @@
 		}
 	}
 	$response = array (
-		"to" => $sender_userid,
+		"replyToken" => $sender_replyToken,
 		"messages" => array (
 			array (
 				"type" => "text",
@@ -67,7 +68,7 @@
  fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $header[] = "Content-Type: application/json";
   $header[] = "Authorization: Bearer gd1gyH+Pc5TROu9ku5u/5tDvFnffsU8nXU69zXuhTgE0dIS5nVGmx9Js8PwijeUqgFuwWXzyJ14/N5FUmp/UXsmSJbUsxMGA6AW1gozlf6cbEgSGLiC02BEaRa5wUSqE7df8FOANP1WjPW8Mh/TgtwdB04t89/1O/w1cDnyilFU=";
-  $ch = curl_init("https://api.line.me/v2/bot/message/push");
+  $ch = curl_init("https://api.line.me/v2/bot/message/reply");
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($response));                                                                  
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
