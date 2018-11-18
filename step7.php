@@ -29,7 +29,7 @@
 	  array (
 		"image" => array (
 		  "source" => array (
-			"imageUri" => "http://139.59.123.8/chtChatBot/LineBot_learning/".$imageId.".jpeg"
+			"imageUri" => "http://139.59.123.8/class/learning/".$imageId.".jpeg"
 		  )
 		),
 		"features" => array (
@@ -50,7 +50,7 @@
   $result_ary = mb_split("\n",$result -> responses[0] -> fullTextAnnotation -> text);
   $ans_txt = "這張發票沒用了，你又製造了一張垃圾";
   foreach ($result_ary as $val) {
-	if($val == "AG-26272435"){
+	if($val == "JS-07510912"){
 	  $ans_txt = "恭喜您中獎啦，快分紅!!";
 	}
   }

@@ -80,25 +80,7 @@
 			);
 			break;
   }
-  // $sender_txt=rawurlencode($sender_txt); //因為使用get的方式呼叫luis api，所以需要轉碼
-  // $ch = curl_init('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/de6c346b-c7ec-4fc2-b497-a4fbfc9d24ca?subscription-key=2c842c8dba264856887b7d947d96fd05&timezoneOffset=-360&q='.$sender_txt);                                                                      
-  // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                          
-  // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  // $result_str = curl_exec($ch);
-  // fwrite($myfile, "\xEF\xBB\xBF".$result_str); //在字串前加上\xEF\xBB\xBF轉成utf8格式
-  // $result = json_decode($result_str);
-  // $ans_txt = $result -> topScoringIntent -> intent;
-  // $response = array (
-  //   "to" => $sender_userid,
-  //   "messages" => array (
-  //     array (
-  //       "type" => "text",
-  //       "text" => $ans_txt
-  //     )
-  //   )
-  // );
-  
-  
+
   fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $header[] = "Content-Type: application/json";
   $header[] = "Authorization: Bearer gd1gyH+Pc5TROu9ku5u/5tDvFnffsU8nXU69zXuhTgE0dIS5nVGmx9Js8PwijeUqgFuwWXzyJ14/N5FUmp/UXsmSJbUsxMGA6AW1gozlf6cbEgSGLiC02BEaRa5wUSqE7df8FOANP1WjPW8Mh/TgtwdB04t89/1O/w1cDnyilFU=";
