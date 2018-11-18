@@ -24,48 +24,48 @@
   fclose($imagefile); //將圖片存在server上
 			
   $header[] = "Content-Type: application/json";
-	$post_data = array (
-		"requests" => array (
-				array (
-					"image" => array (
-						"source" => array (
-							"imageUri" => "http://139.59.123.8/chtChatBot/LineBot_learning/".$imageId.".jpeg"
-						)
-					),
-					"features" => array (
-						array (
-							"type" => "TEXT_DETECTION",
-							"maxResults" => 1
-						)
-					)
-				)
+  $post_data = array (
+	"requests" => array (
+	  array (
+		"image" => array (
+		  "source" => array (
+			"imageUri" => "http://139.59.123.8/chtChatBot/LineBot_learning/".$imageId.".jpeg"
+		  )
+		),
+		"features" => array (
+		  array (
+			"type" => "TEXT_DETECTION",
+			"maxResults" => 1
+		  )
 		)
-	);
-	$ch = curl_init('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCiyGiCfjzzPR1JS8PrAxcsQWHdbycVwmg');                                                                      
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));                                                                  
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);                                                                                                   
-	$result = json_decode(curl_exec($ch));
-	$result_ary = mb_split("\n",$result -> responses[0] -> fullTextAnnotation -> text);
-	$ans_txt = "這張發票沒用了，你又製造了一張垃圾";
-	foreach ($result_ary as $val) {
-		if($val == "AG-26272435"){
-			$ans_txt = "恭喜您中獎啦，快分紅!!";
-		}
+	  )
+	)
+  );
+  $ch = curl_init('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCiyGiCfjzzPR1JS8PrAxcsQWHdbycVwmg');                                                                      
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+  curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));                                                                  
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $header);                                                                                                   
+  $result = json_decode(curl_exec($ch));
+  $result_ary = mb_split("\n",$result -> responses[0] -> fullTextAnnotation -> text);
+  $ans_txt = "這張發票沒用了，你又製造了一張垃圾";
+  foreach ($result_ary as $val) {
+	if($val == "AG-26272435"){
+	  $ans_txt = "恭喜您中獎啦，快分紅!!";
 	}
-	$response = array (
-		"replyToken" => $sender_replyToken,
-		"messages" => array (
-			array (
-				"type" => "text",
-				"text" => $result -> responses[0] -> fullTextAnnotation -> text
-			)
-		)
-	);
+  }
+  $response = array (
+	"replyToken" => $sender_replyToken,
+	"messages" => array (
+	  array (
+		"type" => "text",
+		"text" => $result -> responses[0] -> fullTextAnnotation -> text
+	  )
+	)
+  );
   
   
- fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
+  fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $header[] = "Content-Type: application/json";
   $header[] = "Authorization: Bearer gd1gyH+Pc5TROu9ku5u/5tDvFnffsU8nXU69zXuhTgE0dIS5nVGmx9Js8PwijeUqgFuwWXzyJ14/N5FUmp/UXsmSJbUsxMGA6AW1gozlf6cbEgSGLiC02BEaRa5wUSqE7df8FOANP1WjPW8Mh/TgtwdB04t89/1O/w1cDnyilFU=";
   $ch = curl_init("https://api.line.me/v2/bot/message/reply");
